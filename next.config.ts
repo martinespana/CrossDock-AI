@@ -1,6 +1,7 @@
 import type { NextConfig } from 'next';
 const config: NextConfig = {
-  output: 'export',
+  output: process.env.CROSSDOCK_BUILD_TARGET === 'static' ? 'export' : 'standalone',
+  outputFileTracingRoot: process.cwd(),
   trailingSlash: true,
   poweredByHeader: false,
   images: { unoptimized: true },

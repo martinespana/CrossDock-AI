@@ -1,6 +1,6 @@
 # CrossDock AI
 
-Landing de `cross-dock.ai`, en inglés y español. Next.js, TypeScript y Tailwind CSS, con componentes reutilizables y exportación estática. El wordmark y el acento de marca son provisionales. El producto ya opera; el contenido destaca la experiencia logística del equipo y propone agendar una demo.
+Landing de `cross-dock.ai`, en inglés y español. Next.js, TypeScript y Tailwind CSS, con componentes reutilizables, servidor de producción standalone y exportación estática opcional para revisión local. El wordmark y el acento de marca son provisionales. El producto ya opera; el contenido destaca la experiencia logística del equipo y propone agendar una demo.
 
 ## Vista previa local
 
@@ -22,7 +22,9 @@ pnpm typecheck
 pnpm build
 ```
 
-La compilación genera el sitio estático en `out/` y verifica las páginas y los recursos antes de considerarse correcta. La revisión para socios es un paso separado: después de compilar, ejecuta `pnpm run review`. El modo de desarrollo permite revisar cambios sin volver a compilar manualmente.
+`pnpm run build` genera una aplicación Next.js de servidor en `.next/standalone` y prepara sus archivos públicos y recursos estáticos. `pnpm start` inicia esa versión usando el puerto que indique el alojamiento. El modo de desarrollo permite revisar cambios sin volver a compilar manualmente.
+
+Para la versión estática local y la revisión offline, ejecuta `pnpm run build:static` y después `pnpm run review`. La exportación estática se genera en `out/`.
 
 ## Configuración pública
 
@@ -103,9 +105,9 @@ Esta versión no incorpora analítica, publicidad ni almacenamiento de leads en 
 
 ## Publicación en Hostinger
 
-El proyecto tiene `output: 'export'` y conserva la carpeta interna predeterminada de Next.js, `.next`. La exportación estática final se genera en `out/`; no necesita un proceso de servidor de aplicación. En Hostinger utiliza el repositorio de GitHub, rama `main`, raíz `./`, Node `22.x`, gestor `pnpm`, comando `pnpm run build` y directorio de salida `out`. Selecciona el preajuste `Other` / `Otro` para publicar los archivos estáticos sin aplicar una adaptación de Next.js para servidor. No se requiere archivo de entrada de servidor.
+El modo de publicación predeterminado es `output: 'standalone'`, compatible con la adaptación de Next.js que aplica Hostinger. Utiliza el repositorio de GitHub, rama `main`, raíz `./`, Node `22.x`, gestor `pnpm`, preajuste `Next.js`, comando `pnpm run build` y directorio de salida `.next`. Si el panel solicita un comando de inicio, usa `pnpm start`; si solicita archivo de entrada, usa `.next/standalone/server.js`.
 
-La compilación de publicación no genera el archivo offline de revisión para socios. Ese archivo se crea de forma opcional con `pnpm run review` después de compilar. No configures `distDir` ni `NEXT_BUILD_DIR` para cambiar la exportación. Si falta `out/index.html`, el verificador muestra únicamente el modo y la carpeta de los manifiestos de compilación, junto con los nombres de configuraciones encontrados, sin imprimir variables de entorno.
+La compilación de publicación comprueba el servidor generado y copia `public/` y `.next/static/` a `.next/standalone/`, para servir la web completa. El archivo offline de socios es independiente y se genera con `pnpm run build:static` seguido de `pnpm run review`. No añadas `CROSSDOCK_BUILD_TARGET` en Hostinger; ese selector solo se utiliza en el comando estático local.
 
 Configura las variables públicas antes de compilar. Mantén el endpoint vacío hasta que el servicio receptor y la política de privacidad estén listos. Después podrán conectarse el repositorio y el dominio `cross-dock.ai` como pasos separados. Esta documentación no realiza esas acciones.
 
@@ -134,7 +136,7 @@ El selector EN/ES conserva la página equivalente, la sección y la selección d
 
 Las paletas son propuestas para revisar, no una identidad aprobada. La opción inicial sigue siendo lima. Cobalto es la recomendación para comparar primero; petróleo y naranja son alternativas. El parámetro `?palette=cobalt` (también `petrol`, `lime` u `orange`) aplica la selección. La elección se guarda únicamente en `sessionStorage` y no se transmite. La página /brand/ es una herramienta de revisión marcada noindex. No se publica nada por visitarla.
 
-La vista local sirve la exportación compilada de la carpeta del proyecto. Para reflejar cambios en esa vista estática, vuelve a compilar; `pnpm dev` ofrece recarga durante el desarrollo.
+La vista local estática sirve la carpeta `out/`. Para reflejar cambios allí, ejecuta `pnpm run build:static`; `pnpm dev` ofrece recarga durante el desarrollo. La versión de servidor se prueba con `pnpm run build` y `pnpm start`.
 
 ## Revisión con socios: amarillo y dirección Routing
 
@@ -142,6 +144,6 @@ La quinta paleta es amarillo #F4D83A con carbón #191B1A y base #F8F7F2. Es una 
 
 La nueva dirección visual se activa con `?palette=yellow&direction=kinetic`. La dirección inicial se conserva con `direction=classic`. En /brand/ pueden compararse ambos estilos y las cinco paletas; cambiar entre EN/ES conserva las elecciones. El estilo se implementa en `app/kinetic.css`, separado de la composición original.
 
-El exportador `scripts/create-review.mjs` se ejecuta con `pnpm run review` después de compilar. Convierte las páginas compiladas en un único HTML autocontenido para revisión offline, con CSS y fuente incrustados. El paquete para socios está en outputs. Cada revisor puede copiar su opinión y compartirla por su cuenta; no hay un backend de votos ni un envío automático de mensajes.
+El exportador `scripts/create-review.mjs` se ejecuta con `pnpm run review` después de `pnpm run build:static`. Convierte las páginas estáticas en un único HTML autocontenido para revisión offline, con CSS y fuente incrustados. El paquete para socios está en outputs. Cada revisor puede copiar su opinión y compartirla por su cuenta; no hay un backend de votos ni un envío automático de mensajes.
 
 La dirección 127.0.0.1 solo funciona en la computadora que ejecuta la vista previa. Para compartir mediante enlace se requiere alojar una versión y definir quién tendrá acceso. Esta fase conserva la revisión local y no publica ni conecta el dominio.

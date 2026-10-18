@@ -4,7 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "WATCHPACK_POLLING=true next dev --webpack --hostname 127.0.0.1",
-    "build": "next build --webpack && node scripts/verify-export.mjs",
+    "build": "next build --webpack && node scripts/prepare-standalone.mjs",
+    "build:static": "CROSSDOCK_BUILD_TARGET=static next build --webpack && node scripts/verify-export.mjs",
+    "start": "node scripts/start-server.mjs",
     "typecheck": "tsc --noEmit",
     "review": "node scripts/create-review.mjs"
   },
