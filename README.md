@@ -103,9 +103,9 @@ Esta versión no incorpora analítica, publicidad ni almacenamiento de leads en 
 
 ## Publicación en Hostinger
 
-El proyecto tiene `output: 'export'` y `distDir: 'out'`. Next genera los archivos estáticos finales en `out/`; no necesita un proceso de servidor de aplicación. En Hostinger utiliza el repositorio de GitHub, rama `main`, raíz `./`, Node `22.x`, gestor `pnpm`, comando `pnpm run build` y directorio de salida `out`.
+El proyecto tiene `output: 'export'` y conserva la carpeta interna predeterminada de Next.js, `.next`. La exportación estática final se genera en `out/`; no necesita un proceso de servidor de aplicación. En Hostinger utiliza el repositorio de GitHub, rama `main`, raíz `./`, Node `22.x`, gestor `pnpm`, comando `pnpm run build` y directorio de salida `out`. Selecciona el preajuste `Other` / `Otro` para publicar los archivos estáticos sin aplicar una adaptación de Next.js para servidor. No se requiere archivo de entrada de servidor.
 
-La compilación de publicación no genera el archivo offline de revisión para socios. Ese archivo se crea de forma opcional con `pnpm run review` después de compilar. La ruta de salida se fija en la configuración y no depende de `NEXT_BUILD_DIR`.
+La compilación de publicación no genera el archivo offline de revisión para socios. Ese archivo se crea de forma opcional con `pnpm run review` después de compilar. No configures `distDir` ni `NEXT_BUILD_DIR` para cambiar la exportación. Si falta `out/index.html`, el verificador muestra únicamente el modo y la carpeta de los manifiestos de compilación, junto con los nombres de configuraciones encontrados, sin imprimir variables de entorno.
 
 Configura las variables públicas antes de compilar. Mantén el endpoint vacío hasta que el servicio receptor y la política de privacidad estén listos. Después podrán conectarse el repositorio y el dominio `cross-dock.ai` como pasos separados. Esta documentación no realiza esas acciones.
 
