@@ -1,0 +1,25 @@
+{
+  "name": "crossdock-ai",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "WATCHPACK_POLLING=true next dev --webpack --hostname 127.0.0.1",
+    "build": "next build --webpack && node scripts/create-review.mjs",
+    "typecheck": "tsc --noEmit",
+    "review": "node scripts/create-review.mjs"
+  },
+  "dependencies": {
+    "next": "16.4.2",
+    "react": "19.3.1",
+    "react-dom": "19.3.1"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "4.3.3",
+    "tailwindcss": "4.3.3",
+    "typescript": "7.0.2",
+    "@types/node": "26.6.5",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0"
+  },
+  "packageManager": "pnpm@11.25.0"
+}
