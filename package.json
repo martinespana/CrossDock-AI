@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "WATCHPACK_POLLING=true next dev --webpack --hostname 127.0.0.1",
-    "build": "next build --webpack && node scripts/create-review.mjs",
+    "build": "next build --webpack && node scripts/verify-export.mjs",
     "typecheck": "tsc --noEmit",
     "review": "node scripts/create-review.mjs"
   },

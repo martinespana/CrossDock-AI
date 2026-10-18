@@ -22,7 +22,7 @@ pnpm typecheck
 pnpm build
 ```
 
-La compilación genera el sitio estático en `out/`. El modo de desarrollo permite revisar cambios sin volver a compilar manualmente.
+La compilación genera el sitio estático en `out/` y verifica las páginas y los recursos antes de considerarse correcta. La revisión para socios es un paso separado: después de compilar, ejecuta `pnpm run review`. El modo de desarrollo permite revisar cambios sin volver a compilar manualmente.
 
 ## Configuración pública
 
@@ -101,9 +101,11 @@ La página `/privacy/` es un borrador explícito, excluido de indexación. Debe 
 
 Esta versión no incorpora analítica, publicidad ni almacenamiento de leads en el navegador. Un servicio de hosting o un receptor futuro puede generar sus propios registros técnicos; sus prácticas deben incluirse en la política final. No hay un perfil de LinkedIn confirmado ni se ha simulado uno.
 
-## Preparación para Vercel, para una fase posterior
+## Publicación en Hostinger
 
-El proyecto tiene `output: 'export'` y no necesita un servidor de aplicación propio. Una vez aprobada la revisión local, puede importarse en Vercel con el preset de Next.js, utilizando esta carpeta como raíz del proyecto y `pnpm build` como comando de compilación. La exportación estática se produce en `out/`.
+El proyecto tiene `output: 'export'` y `distDir: 'out'`. Next genera los archivos estáticos finales en `out/`; no necesita un proceso de servidor de aplicación. En Hostinger utiliza el repositorio de GitHub, rama `main`, raíz `./`, Node `22.x`, gestor `pnpm`, comando `pnpm run build` y directorio de salida `out`.
+
+La compilación de publicación no genera el archivo offline de revisión para socios. Ese archivo se crea de forma opcional con `pnpm run review` después de compilar. La ruta de salida se fija en la configuración y no depende de `NEXT_BUILD_DIR`.
 
 Configura las variables públicas antes de compilar. Mantén el endpoint vacío hasta que el servicio receptor y la política de privacidad estén listos. Después podrán conectarse el repositorio y el dominio `cross-dock.ai` como pasos separados. Esta documentación no realiza esas acciones.
 
@@ -140,6 +142,6 @@ La quinta paleta es amarillo #F4D83A con carbón #191B1A y base #F8F7F2. Es una 
 
 La nueva dirección visual se activa con `?palette=yellow&direction=kinetic`. La dirección inicial se conserva con `direction=classic`. En /brand/ pueden compararse ambos estilos y las cinco paletas; cambiar entre EN/ES conserva las elecciones. El estilo se implementa en `app/kinetic.css`, separado de la composición original.
 
-El exportador `scripts/create-review.mjs` convierte las páginas compiladas en un único HTML autocontenido para revisión offline, con CSS y fuente incrustados. El paquete para socios está en outputs. Cada revisor puede copiar su opinión y compartirla por su cuenta; no hay un backend de votos ni un envío automático de mensajes.
+El exportador `scripts/create-review.mjs` se ejecuta con `pnpm run review` después de compilar. Convierte las páginas compiladas en un único HTML autocontenido para revisión offline, con CSS y fuente incrustados. El paquete para socios está en outputs. Cada revisor puede copiar su opinión y compartirla por su cuenta; no hay un backend de votos ni un envío automático de mensajes.
 
 La dirección 127.0.0.1 solo funciona en la computadora que ejecuta la vista previa. Para compartir mediante enlace se requiere alojar una versión y definir quién tendrá acceso. Esta fase conserva la revisión local y no publica ni conecta el dominio.
