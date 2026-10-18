@@ -7,21 +7,24 @@
     "build": "next build --webpack && node scripts/prepare-standalone.mjs",
     "build:static": "CROSSDOCK_BUILD_TARGET=static next build --webpack && node scripts/verify-export.mjs",
     "start": "node scripts/start-server.mjs",
+    "check:standalone": "node scripts/check-standalone.mjs",
     "typecheck": "tsc --noEmit",
     "review": "node scripts/create-review.mjs"
   },
   "dependencies": {
+    "@swc/helpers": "0.5.23",
     "next": "16.4.2",
     "react": "19.3.1",
-    "react-dom": "19.3.1"
+    "react-dom": "19.3.1",
+    "tslib": "2.8.1"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "4.3.3",
-    "tailwindcss": "4.3.3",
-    "typescript": "7.0.2",
     "@types/node": "26.6.5",
     "@types/react": "19.3.0",
-    "@types/react-dom": "19.3.0"
+    "@types/react-dom": "19.3.0",
+    "tailwindcss": "4.3.3",
+    "typescript": "7.0.2"
   },
   "packageManager": "pnpm@11.25.0"
 }

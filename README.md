@@ -109,6 +109,8 @@ El modo de publicación predeterminado es `output: 'standalone'`, compatible con
 
 La compilación de publicación comprueba el servidor generado y copia `public/` y `.next/static/` a `.next/standalone/`, para servir la web completa. El archivo offline de socios es independiente y se genera con `pnpm run build:static` seguido de `pnpm run review`. No añadas `CROSSDOCK_BUILD_TARGET` en Hostinger; ese selector solo se utiliza en el comando estático local.
 
+El paquete incluye las dependencias de producción completas `@swc/helpers` y `tslib`, con sus variantes ESM y CommonJS. Esto evita el error de ejecución `Cannot find module '@swc/helpers/_/_interop_require_default'` en Node 22+. Después de compilar, `pnpm run check:standalone` copia el servidor fuera del proyecto y comprueba sus dependencias, las páginas bilingües y los recursos por HTTP, sin recurrir a `node_modules` de desarrollo.
+
 Configura las variables públicas antes de compilar. Mantén el endpoint vacío hasta que el servicio receptor y la política de privacidad estén listos. Después podrán conectarse el repositorio y el dominio `cross-dock.ai` como pasos separados. Esta documentación no realiza esas acciones.
 
 ## Revisión de aceptación
