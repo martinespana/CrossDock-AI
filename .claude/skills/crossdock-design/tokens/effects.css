@@ -1,0 +1,9 @@
+/* CrossDock AI — Effects. Casi sin sombras; movimiento sutil. */
+:root {
+  --border: 1px solid var(--line);
+  --shadow-signature: 7px 7px 0 #dedfd7;   /* solo .demo-invitation */
+  --header-glass: rgba(248, 248, 248, .96); /* + backdrop-filter: blur(14px) */
+  --ease: .18s ease;                        /* hovers */
+  --arrow-nudge: translateX(3px);           /* flecha en hover */
+  --flow-loop: 4s ease-in-out infinite;     /* visuales de flujo */
+}

@@ -1,0 +1,8 @@
+/* Geist variable (OFL) local. En producción la carga next/font en components/document-shell.tsx. */
+@font-face {
+  font-family: 'Geist';
+  src: url('../assets/fonts/geist-latin.woff2') format('woff2');
+  font-weight: 100 900;
+  font-display: swap;
+}
+:root { --font-geist: 'Geist'; }

@@ -1,0 +1,22 @@
+/* CrossDock AI — Spacing, layout and radii (valores de app/globals.css) */
+:root {
+  --container: min(1344px, calc(100% - 112px));
+  --section-pad: 104px;      /* .section-pad arriba y abajo */
+  --header-height: 84px;
+  --heading-row-gap: 45px;   /* margen bajo .section-heading-row */
+  --label-gap: 28px;         /* margen bajo .section-label */
+  --grid-gap-cards: 23px;    /* .use-case-grid */
+  --grid-gap-steps: 48px;    /* .approach-steps */
+  --split-gap: 100px;        /* CTA y operators, 2 columnas */
+  --hero-gap: 60px;
+
+  --radius-xs: 2px;          /* language switch, kinetic */
+  --radius-sm: 3px;          /* tags, section-label number */
+  --radius: 4px;             /* botones, inputs, chips */
+  --radius-card: 6px;        /* .use-case, .approach-map */
+  --radius-visual: 10px;     /* .operations-visual */
+  --radius-signature: 4px 28px 4px 4px; /* .demo-invitation */
+
+  /* Breakpoints (solo referencia; CSS vars no sirven en @media) */
+  /* 1500 · 1150 · 900 (nav → menú) · 700 (1 columna) · 365 */
+}

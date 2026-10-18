@@ -1,0 +1,33 @@
+/* ─────────────────────────────────────────────────────────────
+   CrossDock AI — Color tokens (de app/globals.css)
+   Papel y tinta monocromo + UN acento. El acento cambia con
+   html[data-palette]; lime es el default.
+   ───────────────────────────────────────────────────────────── */
+:root {
+  --paper: #f9f9f9;    /* fondo de página */
+  --surface: #f1f1f1;  /* paneles suaves */
+  --white: #ffffff;    /* tarjetas, inputs */
+  --ink: #1f1f1f;      /* texto, botón primario, bloques oscuros */
+  --muted: #6b6b6b;    /* texto secundario */
+  --line: #dfdfdf;     /* todos los bordes */
+  --accent: #c5ee9c;   /* lime (default) */
+  --accent-ink: #2d2d2d;
+  --accent-soft: color-mix(in srgb, var(--accent) 16%, white);
+  --accent-line: color-mix(in srgb, var(--accent) 34%, #d6d6d6);
+
+  /* Grises de apoyo usados directo en el CSS de producción */
+  --gray-heading: #919191; /* .muted-heading */
+  --gray-number: #a2a2a2;  /* /01, 01 / */
+  --band: #efefef;         /* banda .approach-section y footer */
+
+  /* Bandas oscuras */
+  --dark-band: #232323;    /* .operators-section */
+  --dark-card: #20241f;    /* .demo-invitation */
+  --dark-demo: #171c19;    /* header y página demo */
+}
+
+html[data-palette='lime']   { --accent: #C5EE9C; --accent-ink: #13201B; }
+html[data-palette='cobalt'] { --accent: #315CFD; --accent-ink: #FFFFFF; --paper: #F8F9FC; --ink: #171B24; }
+html[data-palette='petrol'] { --accent: #007F78; --accent-ink: #FFFFFF; --paper: #F7FAF9; --ink: #172321; }
+html[data-palette='orange'] { --accent: #E97435; --accent-ink: #171B19; --paper: #FCF9F6; --ink: #241D19; }
+html[data-palette='yellow'] { --accent: #F4D83A; --accent-ink: #191B1A; --paper: #F8F7F2; --ink: #191B1A; }

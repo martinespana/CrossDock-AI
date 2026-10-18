@@ -1,0 +1,1 @@
+Thin full-width strip between lines: two-line statement left, mono system list `TMS + ERP + WMS + YOUR TEAM` center, small note right. Classes `.foundation-strip`, `.foundation-inner`, `.system-list`, `.foundation-note`. Use right after a hero to anchor the message.
