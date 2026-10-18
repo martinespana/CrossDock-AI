@@ -13,12 +13,15 @@ const project = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const isolated = await mkdtemp(path.join(tmpdir(), 'crossdock-runtime-'));
 const app = path.join(isolated, 'app');
 const env = { ...process.env, NODE_PATH: '', NODE_OPTIONS: '', NODE_ENV: 'production' };
+const dereference = process.argv.includes('--dereference');
 let server;
 let serverExit;
 let logs = '';
 try {
   // Outside the checkout, Node cannot silently use development dependencies.
-  await cp(path.join(project, '.next', 'standalone'), app, { recursive: true, verbatimSymlinks: true });
+  await cp(path.join(project, '.next', 'standalone'), app, {
+    recursive: true, ...(dereference ? { dereference: true } : { verbatimSymlinks: true }),
+  });
   const isolatedRoot = await realpath(app);
   async function checkLinks(directory) {
     for (const entry of await readdir(directory, { withFileTypes: true })) {
@@ -34,12 +37,13 @@ try {
     const path = require('node:path');
     const { createRequire } = require('node:module');
     const r = createRequire(require.resolve('next/package.json'));
-    for (const name of ['@swc/helpers/_/_interop_require_default', 'tslib']) {
+    for (const name of ['react', 'react/jsx-runtime', 'react-dom', 'react-dom/server', '@next/env', '@swc/helpers/_/_interop_require_default', 'tslib']) {
       const resolved = r.resolve(name);
       assert(resolved.startsWith(process.cwd() + path.sep), 'Dependency escaped isolated bundle: ' + name);
       r(name);
     }
     r('next/dist/client/lib/console.js');
+    r('next/dist/server/app-render/dynamic-rendering.js');
   `;
   for (const flags of [[], ['--no-experimental-require-module']]) {
     const result = spawnSync(process.execPath, [...flags, '-e', probe], { cwd: app, env, encoding: 'utf8' });
@@ -85,7 +89,7 @@ try {
   const missing = await fetch(base + '/nonexistent-runtime-check/', { signal: AbortSignal.timeout(10_000) });
   assert.equal(missing.status, 404);
   assert(!logs.includes('Cannot find module'), logs);
-  console.log(`Isolated standalone check passed: ESM/CJS dependencies, ${routes.length} routes, ${assets.size} assets, and the 404 page.`);
+  console.log(`Isolated standalone check passed (${dereference ? 'dereferenced packages' : 'preserved links'}): React/Next ESM/CJS dependencies, ${routes.length} routes, ${assets.size} assets, and the 404 page.`);
 } finally {
   if (server && server.exitCode === null) server.kill('SIGTERM');
   if (serverExit) await serverExit;

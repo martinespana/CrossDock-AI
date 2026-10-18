@@ -7,7 +7,7 @@
     "build": "next build --webpack && node scripts/prepare-standalone.mjs",
     "build:static": "CROSSDOCK_BUILD_TARGET=static next build --webpack && node scripts/verify-export.mjs",
     "start": "node scripts/start-server.mjs",
-    "check:standalone": "node scripts/check-standalone.mjs",
+    "check:standalone": "node scripts/check-standalone.mjs && node scripts/check-standalone.mjs --dereference",
     "typecheck": "tsc --noEmit",
     "review": "node scripts/create-review.mjs"
   },

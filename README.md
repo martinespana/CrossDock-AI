@@ -109,7 +109,9 @@ El modo de publicación predeterminado es `output: 'standalone'`, compatible con
 
 La compilación de publicación comprueba el servidor generado y copia `public/` y `.next/static/` a `.next/standalone/`, para servir la web completa. El archivo offline de socios es independiente y se genera con `pnpm run build:static` seguido de `pnpm run review`. No añadas `CROSSDOCK_BUILD_TARGET` en Hostinger; ese selector solo se utiliza en el comando estático local.
 
-El paquete incluye las dependencias de producción completas `@swc/helpers` y `tslib`, con sus variantes ESM y CommonJS. Esto evita el error de ejecución `Cannot find module '@swc/helpers/_/_interop_require_default'` en Node 22+. Después de compilar, `pnpm run check:standalone` copia el servidor fuera del proyecto y comprueba sus dependencias, las páginas bilingües y los recursos por HTTP, sin recurrir a `node_modules` de desarrollo.
+`pnpm-workspace.yaml` configura `nodeLinker: hoisted`: instala directorios normales de paquetes, compatibles con adaptadores que copian las dependencias sin conservar los enlaces de pnpm. La preparación del servidor comprueba esa estructura e incluye React, React DOM, scheduler, SWC helpers y tslib completos, con sus distintas condiciones de exportación. Esto aborda los errores de ejecución `Cannot find module 'react'` y `Cannot find module '@swc/helpers/_/_interop_require_default'`.
+
+Después de compilar, `pnpm run check:standalone` copia el servidor fuera del proyecto y comprueba sus dependencias, las páginas bilingües y los recursos por HTTP, sin recurrir a `node_modules` de desarrollo. Hace la prueba tanto conservando los enlaces como copiando su contenido, para detectar incompatibilidades al empaquetar. Mantén los ajustes de Hostinger anteriores, incluido el directorio `.next`.
 
 Configura las variables públicas antes de compilar. Mantén el endpoint vacío hasta que el servicio receptor y la política de privacidad estén listos. Después podrán conectarse el repositorio y el dominio `cross-dock.ai` como pasos separados. Esta documentación no realiza esas acciones.
 

@@ -1,0 +1,2 @@
+# Produce regular package directories that deployment adapters can relocate.
+nodeLinker: hoisted
