@@ -1,8 +1,8 @@
 import type { Locale } from '@/lib/i18n';
 import { homePath, privacyPath } from '@/lib/i18n';
+import { siteConfig } from '@/lib/config';
 import { Header } from './header';
-import { Icon, Mark } from './icons';
-import { LeadForm } from './lead-form';
+import { Arrow, Icon, Mark } from './icons';
 
 const copy = {
   en: {
@@ -19,7 +19,11 @@ const copy = {
     operatorDetail: 'Experience in the field. Intelligence in the workflow.',
     formEyebrow: 'LET’S TALK LOGISTICS',
     formHeading: 'Book a demo',
-    formDescription: 'Tell us about your team. We’ll contact you to arrange a demo focused on your operation.',
+    formDescription: 'Choose an available date and time, then confirm your demo with our team.',
+    calendarTitle: 'Book your CrossDock AI demo in Google Calendar',
+    openCalendar: 'Open booking calendar',
+    newTab: 'opens in a new tab',
+    calendarNote: 'Select your time zone in the calendar. Your booking is complete when Google Calendar confirms it.',
     privacy: 'Privacy Policy',
     back: 'Explore CrossDock AI',
     rights: 'All rights reserved.',
@@ -38,7 +42,11 @@ const copy = {
     operatorDetail: 'Experiencia en el terreno. Inteligencia en cada flujo.',
     formEyebrow: 'HABLEMOS DE TU OPERACIÓN',
     formHeading: 'Agendar una demo',
-    formDescription: 'Cuéntanos sobre tu equipo. Te contactaremos para coordinar una demo enfocada en tu operación.',
+    formDescription: 'Elige una fecha y hora disponibles y confirma tu demo con nuestro equipo.',
+    calendarTitle: 'Agenda tu demo de CrossDock AI en Google Calendar',
+    openCalendar: 'Abrir calendario de reservas',
+    newTab: 'abre en una pestaña nueva',
+    calendarNote: 'Selecciona tu zona horaria en el calendario. Tu reserva queda lista cuando Google Calendar la confirma.',
     privacy: 'Política de privacidad',
     back: 'Explorar CrossDock AI',
     rights: 'Todos los derechos reservados.',
@@ -47,6 +55,10 @@ const copy = {
 
 export function DemoPage({ locale = 'en' }: { locale?: Locale }) {
   const text = copy[locale];
+  const bookingUrl = new URL(siteConfig.demoBookingUrl);
+  bookingUrl.searchParams.set('hl', locale);
+  const embedUrl = new URL(bookingUrl);
+  embedUrl.searchParams.set('gv', 'true');
   return <>
     <Header locale={locale} variant="demo" />
     <main id="main" className="demo-page" aria-labelledby="demo-heading">
@@ -59,7 +71,7 @@ export function DemoPage({ locale = 'en' }: { locale?: Locale }) {
           <circle cx="594" cy="348" r="7" />
         </svg>
       </div>
-      <div className="container demo-layout">
+      <div className="container demo-layout demo-booking-layout">
         <section className="demo-pitch" aria-labelledby="demo-heading">
           <p className="demo-eyebrow mono"><span aria-hidden="true" />{text.eyebrow}</p>
           <h1 id="demo-heading">{text.heading[0]}<br /><span>{text.heading[1]}</span></h1>
@@ -78,11 +90,13 @@ export function DemoPage({ locale = 'en' }: { locale?: Locale }) {
             <div><p>{text.operator}</p><span>{text.operatorDetail}</span></div>
           </div>
         </section>
-        <section className="demo-form-card" aria-labelledby="demo-form-heading">
+        <section className="demo-form-card demo-booking-card" aria-labelledby="demo-form-heading">
           <p className="demo-form-eyebrow mono">{text.formEyebrow}</p>
           <h2 id="demo-form-heading">{text.formHeading}</h2>
           <p className="demo-form-description">{text.formDescription}</p>
-          <LeadForm locale={locale} />
+          <a className="button button-accent demo-booking-link" href={bookingUrl.toString()} target="_blank" rel="noopener noreferrer" aria-label={`${text.openCalendar} (${text.newTab})`}>{text.openCalendar}<Arrow /></a>
+          <iframe className="demo-booking-frame" src={embedUrl.toString()} title={text.calendarTitle} loading="lazy" />
+          <p className="demo-booking-note">{text.calendarNote}</p>
         </section>
       </div>
       <footer className="container demo-footer">

@@ -31,14 +31,20 @@ Para la versión estática local y la revisión offline, ejecuta `pnpm run build
 Copia `.env.example` a `.env.local` si necesitas modificar la configuración. Las variables con prefijo `NEXT_PUBLIC_` se incluyen en el código que descarga el navegador: no deben contener contraseñas, tokens privados ni claves de API. Reinicia el servidor de desarrollo después de cambiarlas y vuelve a compilar para cambiar una exportación estática.
 
 - `NEXT_PUBLIC_SITE_URL`: origen utilizado para canonical, Open Graph, sitemap y robots. Valor previsto: `https://cross-dock.ai`. No publica el sitio ni conecta el dominio.
-- `NEXT_PUBLIC_LEAD_ENDPOINT`: URL pública de Formspree o de un servicio propio que recibe solicitudes de demo. Vacía por defecto; esta vista local todavía no envía contactos.
+- `NEXT_PUBLIC_LEAD_ENDPOINT`: receptor opcional del formulario alternativo. La página de demos utiliza Google Calendar y no necesita esta variable.
 - `NEXT_PUBLIC_LINKEDIN_URL`: URL HTTPS del perfil de LinkedIn confirmado. Vacía por defecto; el enlace solo se muestra si hay una dirección válida de `linkedin.com`.
 
-## Solicitudes de demo por correo
+## Reservas de demos con Google Calendar
 
-Los botones «Agendar una demo» / «Book a demo» abren `/es/demo/` y `/demo/`. La página presenta una demostración personalizada, los flujos que se pueden explorar y un formulario comercial. Mantiene el idioma, la paleta y la dirección visual elegidos. El cliente completa nombre, apellido, correo de trabajo, empresa y flujo de interés; teléfono y mensaje son opcionales. El receptor guarda la solicitud y puede notificar al correo del equipo comercial. El formulario solicita una demo; no reserva un horario de calendario.
+Los botones «Agendar una demo» / «Book a demo» abren `/es/demo/` y `/demo/`. Ambas páginas muestran el calendario de reservas confirmado por el equipo: [Demo CrossDock AI](https://calendar.app.google/fL3PxrqjwddZ3kjQ7). El cliente elige un horario y confirma sus datos directamente en Google Calendar. También hay un enlace permanente para abrir las reservas en otra pestaña si el calendario insertado no carga. La web no declara una reserva confirmada por pulsar un enlace.
 
-La conexión está preparada, pero todavía no hay una cuenta receptora vinculada a la web. El destinatario se configura y verifica de forma privada dentro de Formspree; escribirlo en el código de la web no activa las notificaciones. Sin endpoint, la vista local lo indica y no transmite ni guarda los campos.
+El destino está en `siteConfig.demoBookingUrl` (`lib/config.ts`). Se utiliza la dirección completa resuelta desde el enlace compartido, `gv=true` para la vista insertada y `hl=en` / `hl=es` según el idioma. No requiere claves de API, SMTP, credenciales de correo ni nuevas variables de entorno en Hostinger. Google administra disponibilidad, datos de la reserva, confirmación y notificaciones según los ajustes de esa agenda; el buzón de correo de la empresa sigue siendo independiente. Cambiar las agendas que se consultan para evitar cruces se hace en Google Calendar, no en la web.
+
+Documentación oficial: [compartir e insertar una agenda de citas](https://support.google.com/calendar/answer/10733297?hl=es).
+
+## Formulario alternativo por correo (no activo en las páginas de demo)
+
+El componente `LeadForm` sigue disponible para una futura integración de contacto. El destinatario se configura y verifica de forma privada dentro del receptor; escribirlo en el código de la web no activa las notificaciones. Sin endpoint, el componente lo indica y no transmite ni guarda los campos. Este componente solicita contacto y no reserva horarios de calendario.
 
 ### Opción sencilla: Formspree
 
@@ -90,7 +96,7 @@ La validación del navegador y el campo trampa antispam son ayudas de interfaz. 
 - Diseño, tamaños responsive y acento provisional: `app/globals.css`. Cambia el token `--accent` para explorar otra dirección cromática; comprueba de nuevo legibilidad y contraste.
 - Flujo conceptual interactivo: `components/operations-visual.tsx`.
 - Formulario y estados: `components/lead-form.tsx`.
-- Página dedicada de demo en ambos idiomas: `components/demo-page.tsx`; composición y formulario en `app/demo.css`.
+- Página dedicada de demo en ambos idiomas y calendario de reservas: `components/demo-page.tsx`; composición en `app/demo.css`.
 - Datos de configuración: `lib/config.ts`.
 - Borrador editable de privacidad en ambos idiomas: `components/privacy-content.tsx`.
 - Paletas provisionales: `lib/palettes.ts` y tokens en `app/globals.css`.

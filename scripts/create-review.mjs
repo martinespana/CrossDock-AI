@@ -73,6 +73,7 @@ for (const [key, filename] of Object.entries(routeFiles)) {
   const body = source.match(/<body\b[^>]*>([\s\S]*?)<\/body>/i)?.[1];
   if (!body) throw new Error('No server-rendered body found in out/' + filename);
   let clean = body
+    .replace(/<iframe\b[^>]*>[\s\S]*?<\/iframe\s*>/gi, '')
     .replace(/<script\b[^>]*>[\s\S]*?<\/script\s*>/gi, '')
     .replace(/<link\b[^>]*>/gi, '')
     .replace(/<div hidden="">(?:<!--[^]*?-->)?\s*<\/div>/gi, '')
